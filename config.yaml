@@ -1,0 +1,32 @@
+baseURL: https://example.com
+title: Martin's blog
+theme: etch
+languageCode: en-US
+enableInlineShortcodes: yes
+pygmentsCodeFences: yes
+pygmentsUseClasses: yes
+params:
+  copyright: Copyright © 2021 Martin Stoffel
+  dark: auto
+  description: MyBlog
+  highlight: yes
+menu:
+  main:
+    - identifier: posts
+      name: posts
+      title: posts
+      url: /
+      weight: 10
+    - identifier: about
+      name: about
+      title: about
+      url: /about/
+      weight: 20
+permalinks:
+  posts: /:title/
+markup:
+  goldmark:
+    renderer:
+      unsafe: yes
+  tableOfContents:
+    ordered: yes
