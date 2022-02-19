@@ -1,7 +1,8 @@
-baseURL: https://example.com
+baseURL: https://www.mstoffel.xyz/
 title: Martin's blog
 theme: etch
 languageCode: en-US
+googleAnalytics: UA-86436426-2
 enableInlineShortcodes: yes
 pygmentsCodeFences: yes
 pygmentsUseClasses: yes
