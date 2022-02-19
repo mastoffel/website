@@ -3,7 +3,7 @@
     "path": "~/Dropbox/projects/non_science/website/config.yaml",
     "project_path": "config.yaml",
     "type": "yaml",
-    "hash": "3762401181",
+    "hash": "2934516977",
     "contents": "",
     "dirty": false,
     "created": 1645293600106.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "4,30",
+        "cursorPosition": "8,7",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1645296090,
+    "lastKnownWriteTime": 1645302983,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1645296090715,
+    "last_content_update": 1645302983579,
     "read_only": false,
     "read_only_alternatives": []
 }

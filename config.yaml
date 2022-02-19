@@ -8,7 +8,7 @@ pygmentsCodeFences: yes
 pygmentsUseClasses: yes
 params:
   copyright: Copyright © 2021 Martin Stoffel
-  dark: auto
+  dark: "off"
   description: MyBlog
   highlight: yes
 menu:
