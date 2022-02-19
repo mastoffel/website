@@ -3,7 +3,7 @@
     "path": "~/Dropbox/projects/non_science/website/assets/css/syntax.css",
     "project_path": "assets/css/syntax.css",
     "type": "css",
-    "hash": "0",
+    "hash": "4026630",
     "contents": "",
     "dirty": false,
     "created": 1645295134544.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "0,0",
-        "scrollLine": "0"
+        "cursorPosition": "82,0",
+        "scrollLine": "19"
     },
     "folds": "",
-    "lastKnownWriteTime": 1645295775,
+    "lastKnownWriteTime": 1645299029,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1645295775,
+    "last_content_update": 1645299029972,
     "read_only": false,
     "read_only_alternatives": []
 }
