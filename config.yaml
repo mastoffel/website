@@ -1,15 +1,16 @@
 baseURL: https://www.mstoffel.xyz/
-title: Martin's blog
+title: (Uncarved) blog
 theme: etch
 languageCode: en-US
 googleAnalytics: UA-86436426-2
 enableInlineShortcodes: yes
 pygmentsCodeFences: yes
 pygmentsUseClasses: yes
+
 params:
   copyright: Copyright © 2021 Martin Stoffel
   dark: "off"
-  description: MyBlog
+  description: science, coding
   highlight: yes
 menu:
   main:
@@ -28,6 +29,8 @@ permalinks:
 markup:
   goldmark:
     renderer:
-      unsafe: yes
+      unsafe: true
   tableOfContents:
     ordered: yes
+ignoreFiles: 
+  ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]

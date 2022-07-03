@@ -2,16 +2,16 @@
 <html><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MyBlog">
+    <meta name="description" content="science, coding">
     
-    <link rel="shortcut icon" href="https://example.com/favicon.ico">
+    <link rel="shortcut icon" href="https://www.mstoffel.xyz/favicon.ico">
     
     <link rel="stylesheet" href="/css/style.min.css">
 
     <title>Magic map() - a minimal functional programming workflow</title>
 </head>
 <body><header id="banner">
-    <h2><a href="https://example.com">Martin&#39;s blog</a></h2>
+    <h2><a href="https://www.mstoffel.xyz/">(Uncarved) blog</a></h2>
     <nav>
         <ul>
             <li>
@@ -29,90 +29,76 @@
         <div>
                 <time>Mar 19, 2021</time>
             </div>
-    </header>
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-
-<div id="TOC">
-
-</div>
-
-<p>“Form follows function” - <em>Louis Sullivan</em></p>
-<p>Functional programming is simply about writing code with functions. Instead of repeating the same line of code over and over or using double-nested for loops, we can abstract the essence of what we are doing into functions. A function can then be elegantly applied to many inputs. Here, we will do this with <code>purrr::map()</code>, which I’m using day in and day out and which is a great starting point to dive into the world of functional programming.</p>
-<p>Let’s go through some of the <code>map()</code>-magic with a minimal workflow to produce clean, robust and fast code. We will do a small genome-wide association study, an analysis looking at the association between genes and a trait by fitting a model over and over again for every SNP in the genome.</p>
+    </header><p>&ldquo;Form follows function&rdquo; - <em>Louis Sullivan</em></p>
+<p>Functional programming is simply about writing code with functions. Instead of repeating the same line of code over and over or using double-nested for loops, we can abstract the essence of what we are doing into functions. A function can then be elegantly applied to many inputs. Here, we will do this with <code>purrr::map()</code>, which I&rsquo;m using day in and day out and which is a great starting point to dive into the world of functional programming.</p>
+<p>Let&rsquo;s go through some of the <code>map()</code>-magic with a minimal workflow to produce clean, robust and fast code. We will do a small genome-wide association study, an analysis looking at the association between genes and a trait by fitting a model over and over again for every SNP in the genome.</p>
 <p>Here are some my favorite packages.</p>
-<pre class="r"><code>library(purrr) # provides the key function here: map
-library(furrr) # does map in parallel
-library(dplyr) # does all sorts of magic
-library(glue)  # concatenates strings beautifully
-library(broom) # takes a model and returns a tidy data.frame</code></pre>
-<p>Let’s see whether drinking coffee has a genetic basis. We make up a trait
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">library</span><span class="p">(</span><span class="n">purrr</span><span class="p">)</span> <span class="c1"># provides the key function here: map</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">furrr</span><span class="p">)</span> <span class="c1"># does map in parallel</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span> <span class="c1"># does all sorts of magic</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">glue</span><span class="p">)</span>  <span class="c1"># concatenates strings beautifully</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">broom</span><span class="p">)</span> <span class="c1"># takes a model and returns a tidy data.frame</span>
+</code></pre></div><p>Let&rsquo;s see whether drinking coffee has a genetic basis. We make up a trait
 (coffees per day) and 100 SNPs for 100 individuals.</p>
-<div id="simulate-data" class="section level2">
-<h2>Simulate data</h2>
-<pre class="r"><code>coffees   &lt;- sample(1:6, 100, TRUE)
-snps      &lt;- replicate(100, sample(c(0,1,2), 100, TRUE))
-snp_names &lt;- paste0(&quot;snp&quot;, 1:100)
+<h2 id="simulate-data">Simulate data</h2>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">coffees</span>   <span class="o">&lt;-</span> <span class="nf">sample</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">6</span><span class="p">,</span> <span class="m">100</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">snps</span>      <span class="o">&lt;-</span> <span class="nf">replicate</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="nf">sample</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">),</span> <span class="m">100</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">))</span>
+<span class="n">snp_names</span> <span class="o">&lt;-</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&#34;snp&#34;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">)</span>
 
-dat &lt;- data.frame(cbind(coffees, snps)) %&gt;% 
-            setNames(c(&quot;coffees&quot;, snp_names))
+<span class="n">dat</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">coffees</span><span class="p">,</span> <span class="n">snps</span><span class="p">))</span> <span class="o">%&gt;%</span> 
+            <span class="nf">setNames</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&#34;coffees&#34;</span><span class="p">,</span> <span class="n">snp_names</span><span class="p">))</span>
             
-head(dat[1:5, 1:7])</code></pre>
-<pre><code>#&gt;   coffees snp1 snp2 snp3 snp4 snp5 snp6
-#&gt; 1       1    1    2    1    0    1    1
-#&gt; 2       5    1    1    2    0    0    2
-#&gt; 3       6    1    2    0    1    1    0
-#&gt; 4       5    0    2    2    1    1    2
-#&gt; 5       3    0    2    1    2    0    1</code></pre>
-</div>
-<div id="write-a-function" class="section level2">
-<h2>1) Write a function</h2>
+<span class="nf">head</span><span class="p">(</span><span class="n">dat[1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">7</span><span class="n">]</span><span class="p">)</span>
+</code></pre></div><pre><code>#&gt;   coffees snp1 snp2 snp3 snp4 snp5 snp6
+#&gt; 1       1    0    1    0    0    2    1
+#&gt; 2       1    2    1    1    1    0    2
+#&gt; 3       1    0    0    2    2    0    0
+#&gt; 4       3    0    0    2    0    2    1
+#&gt; 5       3    1    2    2    2    0    0
+</code></pre><h2 id="1-write-a-function">1) Write a function</h2>
 <p>We could now do 100 linear models manually by writing 100 lines of code, or we could do a <code>for</code> loop.</p>
-<p>Instead, let’s write a function to fit <em>one</em> model, and then apply this function to each SNP. We generally want the thing that changes (i.e. snp_name) to be the first argument. The function below fits a linear model of coffee consumption with a snp as predictor, and extracts the model estimate and p-value for the SNP. It returns a one-row <code>data.frame</code>. I generally like my functions to return data.frames, because that makes it easy to put together many function outputs into a big data.frame at the end.</p>
-<pre class="r"><code>fit_model &lt;- function(snp_name, dat) {
-      # write formula using SNP name
-      model_formula &lt;- glue(&quot;coffees ~ {snp_name}&quot;)
-      # fit linear model
-      fit &lt;- lm(model_formula, data = dat) %&gt;% 
-                  broom::tidy() %&gt;%        # tidy results
-                  filter(term == snp_name) # extract snp
-      return(fit)
+<p>Instead, let&rsquo;s write a function to fit <em>one</em> model, and then apply this function to each SNP. We generally want the thing that changes (i.e. snp_name) to be the first argument. The function below fits a linear model of coffee consumption with a snp as predictor, and extracts the model estimate and p-value for the SNP. It returns a one-row <code>data.frame</code>. I generally like my functions to return data.frames, because that makes it easy to put together many function outputs into a big data.frame at the end.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">fit_model</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">snp_name</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1"># write formula using SNP name</span>
+      <span class="n">model_formula</span> <span class="o">&lt;-</span> <span class="nf">glue</span><span class="p">(</span><span class="s">&#34;coffees ~ {snp_name}&#34;</span><span class="p">)</span>
+      <span class="c1"># fit linear model</span>
+      <span class="n">fit</span> <span class="o">&lt;-</span> <span class="nf">lm</span><span class="p">(</span><span class="n">model_formula</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dat</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+                  <span class="n">broom</span><span class="o">::</span><span class="nf">tidy</span><span class="p">()</span> <span class="o">%&gt;%</span>        <span class="c1"># tidy results</span>
+                  <span class="nf">filter</span><span class="p">(</span><span class="n">term</span> <span class="o">==</span> <span class="n">snp_name</span><span class="p">)</span> <span class="c1"># extract snp</span>
+      <span class="nf">return</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
       
-}</code></pre>
-</div>
-<div id="use-map-to-apply-function-to-every-snp" class="section level2">
-<h2>2) Use <code>map()</code> to apply function to every SNP</h2>
+<span class="p">}</span>
+</code></pre></div><h2 id="2-use-map-to-apply-function-to-every-snp">2) Use <code>map()</code> to apply function to every SNP</h2>
 <p>Using a vector with <code>snp_names</code>, we can apply the function to every SNP. The structure of <code>map()</code> is always the same: map(list/vector, function, additional_arguments). <code>map()</code> always returns a list. We can convert the list to a data.frame with <code>dplyr::bind_rows()</code>.</p>
-<pre class="r"><code># run gwas
-gwas &lt;- map(snp_names, fit_model, dat) %&gt;% 
-              bind_rows()
-# print first three SNPs
-gwas[1:3, ]</code></pre>
-<pre><code>#&gt; # A tibble: 3 x 5
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># run gwas</span>
+<span class="n">gwas</span> <span class="o">&lt;-</span> <span class="nf">map</span><span class="p">(</span><span class="n">snp_names</span><span class="p">,</span> <span class="n">fit_model</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+              <span class="nf">bind_rows</span><span class="p">()</span>
+<span class="c1"># print first three SNPs</span>
+<span class="n">gwas[1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">]</span>
+</code></pre></div><pre><code>#&gt; # A tibble: 3 x 5
 #&gt;   term  estimate std.error statistic p.value
 #&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&gt; 2 snp2    0.201      0.207     0.970   0.334
-#&gt; 3 snp3   -0.323      0.202    -1.60    0.113</code></pre>
-</div>
-<div id="what-if-something-goes-wrong---map-safely" class="section level2">
-<h2>3) What if something goes wrong? - <code>map()</code> safely</h2>
-<p>Loops often fail becomes something goes wrong in one or a few iterations.Let’s introduce a non-existing SNP and try again to see how it fails</p>
-<pre class="r"><code>snp_names2 &lt;- c(&quot;not_a_snp&quot;, snp_names)
+#&gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&gt; 3 snp3  -0.237       0.213   -1.11     0.270
+</code></pre><h2 id="3-what-if-something-goes-wrong---map-safely">3) What if something goes wrong? - <code>map()</code> safely</h2>
+<p>Loops often fail becomes something goes wrong in one or a few iterations.Let&rsquo;s introduce a non-existing SNP and try again to see how it fails</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">snp_names2</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#34;not_a_snp&#34;</span><span class="p">,</span> <span class="n">snp_names</span><span class="p">)</span>
 
-gwas &lt;- map(snp_names2, fit_model, dat) %&gt;% 
-      bind_rows()</code></pre>
-<pre><code>#&gt; Error in eval(predvars, data, env): object &#39;not_a_snp&#39; not found</code></pre>
-<p>We can make our gwas error-safe using <code>purrr::safely()</code>. This does some magic under the hood which isn’t so important now. For every iteration, it will return a list with two elements, one for the result and one for the error (equals NULL if there is no error). This way, we always get the results or errors of all our iterations back.</p>
-<pre class="r"><code>fit_model_safely &lt;- purrr::safely(fit_model)
+<span class="n">gwas</span> <span class="o">&lt;-</span> <span class="nf">map</span><span class="p">(</span><span class="n">snp_names2</span><span class="p">,</span> <span class="n">fit_model</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+      <span class="nf">bind_rows</span><span class="p">()</span>
+</code></pre></div><pre><code>#&gt; Error in eval(predvars, data, env): object 'not_a_snp' not found
+</code></pre><p>We can make our gwas error-safe using <code>purrr::safely()</code>. This does some magic under the hood which isn&rsquo;t so important now. For every iteration, it will return a list with two elements, one for the result and one for the error (equals NULL if there is no error). This way, we always get the results or errors of all our iterations back.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">fit_model_safely</span> <span class="o">&lt;-</span> <span class="n">purrr</span><span class="o">::</span><span class="nf">safely</span><span class="p">(</span><span class="n">fit_model</span><span class="p">)</span>
 
-gwas &lt;- map(snp_names2, fit_model_safely, dat)
-gwas[1:2]</code></pre>
-<pre><code>#&gt; [[1]]
+<span class="n">gwas</span> <span class="o">&lt;-</span> <span class="nf">map</span><span class="p">(</span><span class="n">snp_names2</span><span class="p">,</span> <span class="n">fit_model_safely</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span>
+<span class="n">gwas[1</span><span class="o">:</span><span class="m">2</span><span class="n">]</span>
+</code></pre></div><pre><code>#&gt; [[1]]
 #&gt; [[1]]$result
 #&gt; NULL
 #&gt; 
 #&gt; [[1]]$error
-#&gt; &lt;simpleError in eval(predvars, data, env): object &#39;not_a_snp&#39; not found&gt;
+#&gt; &lt;simpleError in eval(predvars, data, env): object 'not_a_snp' not found&gt;
 #&gt; 
 #&gt; 
 #&gt; [[2]]
@@ -120,67 +106,61 @@ gwas[1:2]</code></pre>
 #&gt; # A tibble: 1 x 5
 #&gt;   term  estimate std.error statistic p.value
 #&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1 snp1    0.0266     0.212     0.126   0.900
+#&gt; 1 snp1    -0.292     0.212     -1.38   0.172
 #&gt; 
 #&gt; [[2]]$error
-#&gt; NULL</code></pre>
-<p><code>map()</code> lets you extract a list element simply by its name. Here, we iterate over the list of results and extract all SNPs that worked.</p>
-<pre class="r"><code>gwas &lt;- map(gwas, &quot;result&quot;) %&gt;% 
-            bind_rows()
-gwas[1:3, ]</code></pre>
-<pre><code>#&gt; # A tibble: 3 x 5
+#&gt; NULL
+</code></pre><p><code>map()</code> lets you extract a list element simply by its name. Here, we iterate over the list of results and extract all SNPs that worked.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">gwas</span> <span class="o">&lt;-</span> <span class="nf">map</span><span class="p">(</span><span class="n">gwas</span><span class="p">,</span> <span class="s">&#34;result&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+            <span class="nf">bind_rows</span><span class="p">()</span>
+<span class="n">gwas[1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">]</span>
+</code></pre></div><pre><code>#&gt; # A tibble: 3 x 5
 #&gt;   term  estimate std.error statistic p.value
 #&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&gt; 2 snp2    0.201      0.207     0.970   0.334
-#&gt; 3 snp3   -0.323      0.202    -1.60    0.113</code></pre>
-</div>
-<div id="what-if-it-takes-too-long---map-in-parallel" class="section level2">
-<h2>4) What if it takes too long? - <code>map()</code> in parallel</h2>
-<p>Once the idea of <code>map()</code> is clear, we can easily parallelise it to run on multiple cores. There is some overhead in collecting computations from several cores so this doesn’t make much sense when the running time is short. But for longer computations, using 4 cores instead of 1 should make it nearly 4 times as fast.</p>
-<p>We can use the <code>furrr</code> package here, which mimics <code>purrr</code> functions but can run in parallel. It is based on <a href="https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html">future</a>, which is why all functions start with <code>future_</code>, for example <code>future_map()</code>. Unlike other ways of parallelising, this approach works on Windows, Mac and Linux. All we have to do now is to first set up a <code>plan()</code> …</p>
-<pre class="r"><code># check available cores
-availableCores()
-# parallelises across 4 cores
-plan(multiprocess, workers = 4)</code></pre>
-<p>… and then replace <code>map()</code> with <code>future_map()</code>.</p>
-<pre class="r"><code>gwas &lt;- future_map(snp_names, fit_model, dat) %&gt;% 
-            bind_rows()
-gwas[1:3, ]</code></pre>
-<pre><code>#&gt; # A tibble: 3 x 5
+#&gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&gt; 3 snp3  -0.237       0.213   -1.11     0.270
+</code></pre><h2 id="4-what-if-it-takes-too-long---map-in-parallel">4) What if it takes too long? - <code>map()</code> in parallel</h2>
+<p>Once the idea of <code>map()</code> is clear, we can easily parallelise it to run on multiple cores. There is some overhead in collecting computations from several cores so this doesn&rsquo;t make much sense when the running time is short. But for longer computations, using 4 cores instead of 1 should make it nearly 4 times as fast.</p>
+<p>We can use the <code>furrr</code> package here, which mimics <code>purrr</code> functions but can run in parallel. It is based on <a href="https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html">future</a>, which is why all functions start with <code>future_</code>, for example <code>future_map()</code>. Unlike other ways of parallelising, this approach works on Windows, Mac and Linux. All we have to do now is to first set up a <code>plan()</code> &hellip;</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># check available cores</span>
+<span class="nf">availableCores</span><span class="p">()</span>
+<span class="c1"># parallelises across 4 cores</span>
+<span class="nf">plan</span><span class="p">(</span><span class="n">multiprocess</span><span class="p">,</span> <span class="n">workers</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span>
+</code></pre></div><p>&hellip; and then replace <code>map()</code> with <code>future_map()</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">gwas</span> <span class="o">&lt;-</span> <span class="nf">future_map</span><span class="p">(</span><span class="n">snp_names</span><span class="p">,</span> <span class="n">fit_model</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+            <span class="nf">bind_rows</span><span class="p">()</span>
+<span class="n">gwas[1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">]</span>
+</code></pre></div><pre><code>#&gt; # A tibble: 3 x 5
 #&gt;   term  estimate std.error statistic p.value
 #&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&gt; 2 snp2    0.201      0.207     0.970   0.334
-#&gt; 3 snp3   -0.323      0.202    -1.60    0.113</code></pre>
-</div>
-<div id="the-full-minimal-workflow-for-a-robust-parallel-gwas" class="section level2">
-<h2>The full, minimal workflow for a robust, parallel gwas</h2>
-<pre class="r"><code>plan(multiprocess, workers = 4)
+#&gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&gt; 3 snp3  -0.237       0.213   -1.11     0.270
+</code></pre><h2 id="the-full-minimal-workflow-for-a-robust-parallel-gwas">The full, minimal workflow for a robust, parallel gwas</h2>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">plan</span><span class="p">(</span><span class="n">multiprocess</span><span class="p">,</span> <span class="n">workers</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span>
 
-fit_model &lt;- function(snp_name, dat) {
-      model_formula &lt;- glue(&quot;coffees ~ {snp_name}&quot;)
-      fit &lt;- lm(model_formula, data = dat) %&gt;% 
-                  broom::tidy() %&gt;% 
-                  filter(term == snp_name)
-      return(fit)
-}
+<span class="n">fit_model</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">snp_name</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">model_formula</span> <span class="o">&lt;-</span> <span class="nf">glue</span><span class="p">(</span><span class="s">&#34;coffees ~ {snp_name}&#34;</span><span class="p">)</span>
+      <span class="n">fit</span> <span class="o">&lt;-</span> <span class="nf">lm</span><span class="p">(</span><span class="n">model_formula</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dat</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+                  <span class="n">broom</span><span class="o">::</span><span class="nf">tidy</span><span class="p">()</span> <span class="o">%&gt;%</span> 
+                  <span class="nf">filter</span><span class="p">(</span><span class="n">term</span> <span class="o">==</span> <span class="n">snp_name</span><span class="p">)</span>
+      <span class="nf">return</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span>
+<span class="p">}</span>
 
-fit_model_safely &lt;- purrr::safely(fit_model)
-gwas &lt;- future_map(snp_names, fit_model_safely, dat) %&gt;% 
-                  map(&quot;result&quot;) %&gt;% 
-                  bind_rows()
+<span class="n">fit_model_safely</span> <span class="o">&lt;-</span> <span class="n">purrr</span><span class="o">::</span><span class="nf">safely</span><span class="p">(</span><span class="n">fit_model</span><span class="p">)</span>
+<span class="n">gwas</span> <span class="o">&lt;-</span> <span class="nf">future_map</span><span class="p">(</span><span class="n">snp_names</span><span class="p">,</span> <span class="n">fit_model_safely</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+                  <span class="nf">map</span><span class="p">(</span><span class="s">&#34;result&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+                  <span class="nf">bind_rows</span><span class="p">()</span>
 
-gwas[1:3, ]</code></pre>
-<pre><code>#&gt; # A tibble: 3 x 5
+<span class="n">gwas[1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">]</span>
+</code></pre></div><pre><code>#&gt; # A tibble: 3 x 5
 #&gt;   term  estimate std.error statistic p.value
 #&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&gt; 2 snp2    0.201      0.207     0.970   0.334
-#&gt; 3 snp3   -0.323      0.202    -1.60    0.113</code></pre>
-</div>
-<div id="general-thoughts-about-map" class="section level2">
-<h2>General thoughts about map</h2>
+#&gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&gt; 3 snp3  -0.237       0.213   -1.11     0.270
+</code></pre><h2 id="general-thoughts-about-map">General thoughts about map</h2>
 <p><em>When to use map?</em></p>
 <ul>
 <li>Whenever more than two lines of code look similar, whenever a for loop needs two cups of coffee to be understood, map will be on your side</li>
@@ -199,17 +179,20 @@ gwas[1:3, ]</code></pre>
 </ul>
 <p><em>What if I have more than one vector or list as input?</em></p>
 <ul>
-<li>map2() takes two vectors as input and pmap() takes any number of vectors as input. I’m using pmap() to iterate over rows in a data.frame, but this is stuff for another blogpost I think.</li>
+<li>map2() takes two vectors as input and pmap() takes any number of vectors as input. I&rsquo;m using pmap() to iterate over rows in a data.frame, but this is stuff for another blogpost I think.</li>
 </ul>
-</div>
-<div id="where-to-go-from-here" class="section level2">
-<h2>Where to go from here</h2>
+<h2 id="where-to-go-from-here">Where to go from here</h2>
 <ul>
-<li><p>Jenny Bryan’s <a href="https://jennybc.github.io/purrr-tutorial/index.html">purrr tutorials</a></p></li>
-<li><p>Hadley Wickham’s <a href="https://www.youtube.com/watch?v=bzUmK0Y07ck&amp;t=2589s%5D">“The joy of functional programming”</a></p></li>
-<li><p>R4DS chapter on <a href="https://r4ds.had.co.nz/iteration.html">iterations</a></p></li>
+<li>
+<p>Jenny Bryan&rsquo;s <a href="https://jennybc.github.io/purrr-tutorial/index.html">purrr tutorials</a></p>
+</li>
+<li>
+<p>Hadley Wickham&rsquo;s <a href="https://www.youtube.com/watch?v=bzUmK0Y07ck&amp;t=2589s%5D">&ldquo;The joy of functional programming&rdquo;</a></p>
+</li>
+<li>
+<p>R4DS chapter on <a href="https://r4ds.had.co.nz/iteration.html">iterations</a></p>
+</li>
 </ul>
-</div>
 </article>
 
         </main><footer id="footer">

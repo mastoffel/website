@@ -2,38 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.com/tags/fonts/</loc>
+    <loc>https://www.mstoffel.xyz/tags/fonts/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/</loc>
+    <loc>https://www.mstoffel.xyz/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/making-a-ggplot-theme/</loc>
+    <loc>https://www.mstoffel.xyz/making-a-ggplot-theme/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/</loc>
+    <loc>https://www.mstoffel.xyz/posts/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/rstats/</loc>
+    <loc>https://www.mstoffel.xyz/tags/rstats/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/</loc>
+    <loc>https://www.mstoffel.xyz/tags/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/visualisation/</loc>
+    <loc>https://www.mstoffel.xyz/tags/visualisation/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/functional_programming/</loc>
+    <loc>https://www.mstoffel.xyz/tags/functional_programming/</loc>
     <lastmod>2021-03-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/magic-map-a-minimal-functional-programming-workflow/</loc>
+    <loc>https://www.mstoffel.xyz/magic-map-a-minimal-functional-programming-workflow/</loc>
     <lastmod>2021-03-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/map/</loc>
+    <loc>https://www.mstoffel.xyz/tags/map/</loc>
     <lastmod>2021-03-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/about/</loc>
+    <loc>https://www.mstoffel.xyz/about/</loc>
   </url><url>
-    <loc>https://example.com/categories/</loc>
+    <loc>https://www.mstoffel.xyz/categories/</loc>
   </url>
 </urlset>

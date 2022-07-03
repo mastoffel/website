@@ -2,16 +2,16 @@
 <html><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MyBlog">
+    <meta name="description" content="science, coding">
     
-    <link rel="shortcut icon" href="https://example.com/favicon.ico">
+    <link rel="shortcut icon" href="https://www.mstoffel.xyz/favicon.ico">
     
     <link rel="stylesheet" href="/css/style.min.css">
 
     <title>Making a ggplot theme</title>
 </head>
 <body><header id="banner">
-    <h2><a href="https://example.com">Martin&#39;s blog</a></h2>
+    <h2><a href="https://www.mstoffel.xyz/">(Uncarved) blog</a></h2>
     <nav>
         <ul>
             <li>
@@ -29,133 +29,126 @@
         <div>
                 <time>Mar 31, 2021</time>
             </div>
-    </header>
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
-
-<div id="TOC">
-
-</div>
-
-<p><a href="https://ggplot2.tidyverse.org/">ggplot2</a> has become one of the most powerful and flexible visualisation tools, with a large community and lots of people working on new extensions every day. A large number of <a href="https://www.r-graph-gallery.com/">ways to represent data</a> makes it possible to create nearly anything in <code>ggplot2</code>, from great <a href="https://bbc.github.io/rcookbook/">data journalism</a> to <a href="https://www.cedricscherer.com/top/dataviz/">beautiful infographics</a> and <a href="https://www.data-imaginist.com/art">generative art</a>. No postprocessing required anymore.</p>
+    </header><p><a href="https://ggplot2.tidyverse.org/">ggplot2</a> has become one of the most powerful and flexible visualisation tools, with a large community and lots of people working on new extensions every day. A large number of <a href="https://www.r-graph-gallery.com/">ways to represent data</a> makes it possible to create nearly anything in <code>ggplot2</code>, from great <a href="https://bbc.github.io/rcookbook/">data journalism</a> to <a href="https://www.cedricscherer.com/top/dataviz/">beautiful infographics</a> and <a href="https://www.data-imaginist.com/art">generative art</a>. No postprocessing required anymore.</p>
 <p>The general look of a ggplot is controlled by a <strong>theme</strong>. Anyone using ggplot knows that the default grey theme is usually not what you want to show the world. Modifying themes is very flexible, but a little bit complicated. Even after using it for years, I have to google some things every single time. Creating your own theme is a way to give your plots a consistent and personal design, and will save you a lot of time and many lines of code.</p>
-<div id="the-default-ggplot" class="section level3">
-<h3>The default ggplot</h3>
-<p>Let’s use the data from <a href="https://www.gapminder.org/">gapminder</a> to see how a default plot looks like.
+<h3 id="the-default-ggplot">The default ggplot</h3>
+<p>Let&rsquo;s use the data from <a href="https://www.gapminder.org/">gapminder</a> to see how a default plot looks like.
 We first load a few packages and do some data pre-processing.</p>
-<pre class="r"><code>library(ggplot2)
-library(gapminder)
-library(dplyr)
-library(wesanderson)
-library(systemfonts)
-# a bit of data processing
-dat &lt;- gapminder %&gt;% 
-        group_by(year, continent) %&gt;% 
-        summarise(`Life Expectancy` = mean(lifeExp),
-                  Population = sum(as.numeric(pop))) %&gt;% 
-        rename(Year = year, Continent = continent)</code></pre>
-<p>Here is a default <code>theme_grey()</code> scatterplot.</p>
-<pre class="r"><code>ggplot(dat, aes(Year, `Life Expectancy`, color = Continent)) +
-      geom_point()</code></pre>
-<p><img src="/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-3-1.png" width="480" /></p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">gapminder</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">wesanderson</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">systemfonts</span><span class="p">)</span>
+<span class="c1"># a bit of data processing</span>
+<span class="n">dat</span> <span class="o">&lt;-</span> <span class="n">gapminder</span> <span class="o">%&gt;%</span> 
+        <span class="nf">group_by</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+        <span class="nf">summarise</span><span class="p">(</span><span class="n">`Life Expectancy`</span> <span class="o">=</span> <span class="nf">mean</span><span class="p">(</span><span class="n">lifeExp</span><span class="p">),</span>
+                  <span class="n">Population</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">pop</span><span class="p">)))</span> <span class="o">%&gt;%</span> 
+        <span class="nf">rename</span><span class="p">(</span><span class="n">Year</span> <span class="o">=</span> <span class="n">year</span><span class="p">,</span> <span class="n">Continent</span> <span class="o">=</span> <span class="n">continent</span><span class="p">)</span>
+</code></pre></div><p>Here is a default <code>theme_grey()</code> scatterplot.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">ggplot</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">Year</span><span class="p">,</span> <span class="n">`Life Expectancy`</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Continent</span><span class="p">))</span> <span class="o">+</span>
+      <span class="nf">geom_point</span><span class="p">()</span>
+</code></pre></div><p><img src="/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-3-1.png" width="480" /></p>
 <p>There are a few things I change all the time:</p>
 <ul>
-<li><p>The background, which I prefer simple plain, or only with x and y axis lines.</p></li>
-<li><p>Grid lines: I usually keep only major grid lines (as they are connected to values) or remove them entirely.</p></li>
-<li><p>The spacing between axis, axis-labels and axis-titles.</p></li>
-<li><p>The font.</p></li>
-<li><p>For themes with axis lines, like theme_classic, the line thickness.</p></li>
+<li>
+<p>The background, which I prefer simple plain, or only with x and y axis lines.</p>
+</li>
+<li>
+<p>Grid lines: I usually keep only major grid lines (as they are connected to values) or remove them entirely.</p>
+</li>
+<li>
+<p>The spacing between axis, axis-labels and axis-titles.</p>
+</li>
+<li>
+<p>The font.</p>
+</li>
+<li>
+<p>For themes with axis lines, like theme_classic, the line thickness.</p>
+</li>
 </ul>
-</div>
-<div id="making-your-own-theme" class="section level3">
-<h3>Making your own theme</h3>
+<h3 id="making-your-own-theme">Making your own theme</h3>
 <p>Making a new theme is quite simple. We (1) create a function which starts with a standard theme, such as <code>theme_minimal</code> and (2) add all the theme aspects which we prefer for our plots. Finally (3), we add some arguments to make changing things easy which we need often, such as axis and grid lines and the text size. Below is the theme I am using, but of course you can change every other theme aspect too (see <a href="https://ggplot2.tidyverse.org/reference/theme.html">theme documentation</a>).
-I’m often using the ‘Avenir Next’ font, which might not be installed on your system (at the end of this post is a little guide on how to install fancy fonts). Using ‘sans’ should always work.</p>
-<pre class="r"><code>theme_simple &lt;- function(axis_lines = TRUE, 
-                         grid_lines = FALSE,     
-                         text_size = 12,       
-                         line_size = 0.2,
-                         # replace with &#39;sans&#39; if not working
-                         base_family= &#39;Avenir Next&#39;){ 
+I&rsquo;m often using the &lsquo;Avenir Next&rsquo; font, which might not be installed on your system (at the end of this post is a little guide on how to install fancy fonts). Using &lsquo;sans&rsquo; should always work.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">theme_simple</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">axis_lines</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> 
+                         <span class="n">grid_lines</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span>     
+                         <span class="n">text_size</span> <span class="o">=</span> <span class="m">12</span><span class="p">,</span>       
+                         <span class="n">line_size</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span>
+                         <span class="c1"># replace with &#39;sans&#39; if not working</span>
+                         <span class="n">base_family</span><span class="o">=</span> <span class="s">&#39;Avenir Next&#39;</span><span class="p">){</span> 
         
-    # start with theme_minimal because it is really simple.
-    th &lt;- ggplot2::theme_minimal(base_family = base_family, 
-                               base_size = text_size)
+    <span class="c1"># start with theme_minimal because it is really simple.</span>
+    <span class="n">th</span> <span class="o">&lt;-</span> <span class="n">ggplot2</span><span class="o">::</span><span class="nf">theme_minimal</span><span class="p">(</span><span class="n">base_family</span> <span class="o">=</span> <span class="n">base_family</span><span class="p">,</span> 
+                               <span class="n">base_size</span> <span class="o">=</span> <span class="n">text_size</span><span class="p">)</span>
          
-    # remove the grid lines 
-    th &lt;- th + theme(panel.grid=element_blank())
+    <span class="c1"># remove the grid lines </span>
+    <span class="n">th</span> <span class="o">&lt;-</span> <span class="n">th</span> <span class="o">+</span> <span class="nf">theme</span><span class="p">(</span><span class="n">panel.grid</span><span class="o">=</span><span class="nf">element_blank</span><span class="p">())</span>
     
-    # if we want axis lines
-    if (axis_lines) {
-      # We add axis lines and give them our preferred thickness
-        th &lt;- th + 
-            theme(axis.line = element_line(size = line_size),
-                  axis.ticks = element_line(size = line_size))
-    } 
-    # do we want grid lines?
-    if (grid_lines) {
-        th &lt;- th + 
-            theme(panel.grid.major = element_line(size = line_size))
-    }
+    <span class="c1"># if we want axis lines</span>
+    <span class="nf">if </span><span class="p">(</span><span class="n">axis_lines</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1"># We add axis lines and give them our preferred thickness</span>
+        <span class="n">th</span> <span class="o">&lt;-</span> <span class="n">th</span> <span class="o">+</span> 
+            <span class="nf">theme</span><span class="p">(</span><span class="n">axis.line</span> <span class="o">=</span> <span class="nf">element_line</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="n">line_size</span><span class="p">),</span>
+                  <span class="n">axis.ticks</span> <span class="o">=</span> <span class="nf">element_line</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="n">line_size</span><span class="p">))</span>
+    <span class="p">}</span> 
+    <span class="c1"># do we want grid lines?</span>
+    <span class="nf">if </span><span class="p">(</span><span class="n">grid_lines</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">th</span> <span class="o">&lt;-</span> <span class="n">th</span> <span class="o">+</span> 
+            <span class="nf">theme</span><span class="p">(</span><span class="n">panel.grid.major</span> <span class="o">=</span> <span class="nf">element_line</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="n">line_size</span><span class="p">))</span>
+    <span class="p">}</span>
     
-    # more space for axis text/title and plot title 
-    th &lt;- th + theme(
-              axis.text.x=element_text(margin=margin(t=5)),
-              axis.text.y=element_text(margin=margin(r=5)),
-              axis.title.x=element_text(margin=margin(t=10)),
-              axis.title.y=element_text(margin=margin(r=10)),
-              plot.title=element_text(margin=margin(b=10)))
+    <span class="c1"># more space for axis text/title and plot title </span>
+    <span class="n">th</span> <span class="o">&lt;-</span> <span class="n">th</span> <span class="o">+</span> <span class="nf">theme</span><span class="p">(</span>
+              <span class="n">axis.text.x</span><span class="o">=</span><span class="nf">element_text</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="nf">margin</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="m">5</span><span class="p">)),</span>
+              <span class="n">axis.text.y</span><span class="o">=</span><span class="nf">element_text</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="m">5</span><span class="p">)),</span>
+              <span class="n">axis.title.x</span><span class="o">=</span><span class="nf">element_text</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="nf">margin</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="m">10</span><span class="p">)),</span>
+              <span class="n">axis.title.y</span><span class="o">=</span><span class="nf">element_text</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="nf">margin</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="m">10</span><span class="p">)),</span>
+              <span class="n">plot.title</span><span class="o">=</span><span class="nf">element_text</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="nf">margin</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="m">10</span><span class="p">)))</span>
     
-    return (th)
-}</code></pre>
-</div>
-<div id="adding-theme_simple-to-the-plot." class="section level3">
-<h3>Adding <code>theme_simple</code> to the plot.</h3>
+    <span class="nf">return </span><span class="p">(</span><span class="n">th</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="adding-theme_simple-to-the-plot">Adding <code>theme_simple</code> to the plot.</h3>
 <p>Now, we can add <code>theme_simple()</code> to the plot.</p>
-<pre class="r"><code>ggplot(dat, aes(Year, `Life Expectancy`, color = Continent)) +
-    geom_point() +
-    scale_color_manual(values = wes_palette(&quot;Darjeeling2&quot;)) + 
-    theme_simple()</code></pre>
-<p><img src="/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-5-1.png" width="480" /></p>
-<p>Small tweaks can sometimes make a big aesthetic difference. <code>ggplot</code> comes with a few themes, like theme_classic(), which are sort of close to what I like my plots to be, but are just not quite there. If you feel the same, it’s time to make your own theme.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">ggplot</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">Year</span><span class="p">,</span> <span class="n">`Life Expectancy`</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Continent</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_point</span><span class="p">()</span> <span class="o">+</span>
+    <span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="nf">wes_palette</span><span class="p">(</span><span class="s">&#34;Darjeeling2&#34;</span><span class="p">))</span> <span class="o">+</span> 
+    <span class="nf">theme_simple</span><span class="p">()</span>
+</code></pre></div><p><img src="/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-5-1.png" width="480" /></p>
+<p>Small tweaks can sometimes make a big aesthetic difference. <code>ggplot</code> comes with a few themes,  like theme_classic(), which are sort of close to what I like my plots to be, but are just not quite there. If you feel the same, it&rsquo;s time to make your own theme.</p>
 <p>Lastly, you can put the code for your theme into an R script and save it, for example as theme_simple.R. The next time you make plots, just source the script to load the <code>theme_simple()</code> function. To use it as the default theme, we can use theme_set like so:</p>
-<pre class="r"><code>source(&quot;theme_simple.R&quot;) 
-# set theme_simple as default theme
-ggplot2::theme_set(theme_simple()) </code></pre>
-<p>That’s it!</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">source</span><span class="p">(</span><span class="s">&#34;theme_simple.R&#34;</span><span class="p">)</span> 
+<span class="c1"># set theme_simple as default theme</span>
+<span class="n">ggplot2</span><span class="o">::</span><span class="nf">theme_set</span><span class="p">(</span><span class="nf">theme_simple</span><span class="p">())</span> 
+</code></pre></div><p>That&rsquo;s it!</p>
 <p>If you are plotting in base R, you might say: You need a full blog post just to explain how to make ggplot look like base R with a different font! And I can only say: touché, my friend.</p>
-</div>
-<div id="appendix-fancy-fonts-made-easy" class="section level3">
-<h3>Appendix: Fancy fonts made easy</h3>
+<h3 id="appendix-fancy-fonts-made-easy">Appendix: Fancy fonts made easy</h3>
 <p>Fonts can really make a big difference in the visual design of plots. A lot of freely available fonts are on <a href="https://fonts.google.com/">https://fonts.google.com/</a>. On Mac, I just download them, double click and they are installed. Then, we have to make them available in R. The <code>systemfonts</code> package magically finds all installed fonts from different directories.</p>
-<pre class="r"><code># install.packages(&quot;systemfonts)
-library(systemfonts)
-# which fonts are installed?
-# print only top 5
-system_fonts()[1:5, ]</code></pre>
-<pre><code>#&gt; # A tibble: 5 x 9
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># install.packages(&#34;systemfonts)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">systemfonts</span><span class="p">)</span>
+<span class="c1"># which fonts are installed?</span>
+<span class="c1"># print only top 5</span>
+<span class="nf">system_fonts</span><span class="p">()</span><span class="n">[1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span> <span class="n">]</span>
+</code></pre></div><pre><code>#&gt; # A tibble: 5 x 9
 #&gt;   path          index name       family    style  weight width  italic monospace
 #&gt;   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;  &lt;ord&gt;  &lt;ord&gt;  &lt;lgl&gt;  &lt;lgl&gt;    
 #&gt; 1 /Library/Fon…     1 Skia-Regu… Skia      Black  heavy  normal FALSE  FALSE    
 #&gt; 2 /Library/Fon…     1 ITFDevana… ITF Deva… Bold   bold   normal FALSE  FALSE    
 #&gt; 3 /Library/Fon…     0 SignPaint… SignPain… House… normal semic… FALSE  FALSE    
 #&gt; 4 /Library/Fon…     1 KannadaSa… Kannada … Bold   bold   normal FALSE  FALSE    
-#&gt; 5 /Library/Fon…     0 Damascus   Damascus  Regul… normal normal FALSE  FALSE</code></pre>
-<p>I’ve just downloaded a font which looks like it’s from Pokemon Red and Blue on the old big grey Game boy, called Press Start 2P. We can first check if its there with <code>match_font()</code> and then just use it in the ggplot.</p>
-<pre class="r"><code># match_font(&#39;Press Start 2P&#39;)
-ggplot(dat, aes(Year, `Life Expectancy`, color = Continent)) +
-    geom_point() +
-    scale_color_manual(values = wes_palette(&quot;Darjeeling2&quot;)) + 
-    theme_simple(base_family = &quot;Press Start 2P&quot;, text_size = 9)</code></pre>
-<p><img src="/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-8-1.png" width="480" /></p>
+#&gt; 5 /Library/Fon…     0 Damascus   Damascus  Regul… normal normal FALSE  FALSE
+</code></pre><p>I&rsquo;ve just downloaded a font which looks like it&rsquo;s from Pokemon Red and Blue on the old big grey Game boy, called Press Start 2P. We can first check if its there with <code>match_font()</code> and then just use it in the ggplot.</p>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># match_font(&#39;Press Start 2P&#39;)</span>
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">Year</span><span class="p">,</span> <span class="n">`Life Expectancy`</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Continent</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_point</span><span class="p">()</span> <span class="o">+</span>
+    <span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="nf">wes_palette</span><span class="p">(</span><span class="s">&#34;Darjeeling2&#34;</span><span class="p">))</span> <span class="o">+</span> 
+    <span class="nf">theme_simple</span><span class="p">(</span><span class="n">base_family</span> <span class="o">=</span> <span class="s">&#34;Press Start 2P&#34;</span><span class="p">,</span> <span class="n">text_size</span> <span class="o">=</span> <span class="m">9</span><span class="p">)</span>
+</code></pre></div><p><img src="/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-8-1.png" width="480" /></p>
 <p>Other options to import fonts are <a href="https://cran.r-project.org/web/packages/extrafont/README.html">extrafont</a> and
 <a href="https://cran.rstudio.com/web/packages/showtext/vignettes/introduction.html">showtext</a>.</p>
-</div>
-<div id="pdf-ing-fancy-fonts" class="section level3">
-<h3>pdf-ing fancy fonts</h3>
+<h3 id="pdf-ing-fancy-fonts">pdf-ing fancy fonts</h3>
 <p>Sometimes, especially for science publications, plots need to be saved as pdfs. With non-standard fonts, this can be problematic, because they have to be embedded, but a little tweak to <code>ggsave()</code> can help here.</p>
-<pre class="r"><code>ggsave(&quot;plot.pdf&quot;, device = cairo_pdf)</code></pre>
-</div>
-</article>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">ggsave</span><span class="p">(</span><span class="s">&#34;plot.pdf&#34;</span><span class="p">,</span> <span class="n">device</span> <span class="o">=</span> <span class="n">cairo_pdf</span><span class="p">)</span>
+</code></pre></div></article>
 
         </main><footer id="footer">
     Copyright © 2021 Martin Stoffel

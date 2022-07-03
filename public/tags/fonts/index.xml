@@ -1,244 +1,223 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>fonts on Martin&#39;s blog</title>
-    <link>https://example.com/tags/fonts/</link>
-    <description>Recent content in fonts on Martin&#39;s blog</description>
+    <title>fonts on (Uncarved) blog</title>
+    <link>https://www.mstoffel.xyz/tags/fonts/</link>
+    <description>Recent content in fonts on (Uncarved) blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Wed, 31 Mar 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://example.com/tags/fonts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mstoffel.xyz/tags/fonts/index.xml" rel="self" type="application/rss+xml" />
     
     
     
     <item>
       <title>Making a ggplot theme</title>
-      <link>https://example.com/making-a-ggplot-theme/</link>
+      <link>https://www.mstoffel.xyz/making-a-ggplot-theme/</link>
       <pubDate>Wed, 31 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/making-a-ggplot-theme/</guid>
-      <description>
-&lt;script src=&#34;https://example.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-
-&lt;div id=&#34;TOC&#34;&gt;
-
-&lt;/div&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://ggplot2.tidyverse.org/&#34;&gt;ggplot2&lt;/a&gt; has become one of the most powerful and flexible visualisation tools, with a large community and lots of people working on new extensions every day. A large number of &lt;a href=&#34;https://www.r-graph-gallery.com/&#34;&gt;ways to represent data&lt;/a&gt; makes it possible to create nearly anything in &lt;code&gt;ggplot2&lt;/code&gt;, from great &lt;a href=&#34;https://bbc.github.io/rcookbook/&#34;&gt;data journalism&lt;/a&gt; to &lt;a href=&#34;https://www.cedricscherer.com/top/dataviz/&#34;&gt;beautiful infographics&lt;/a&gt; and &lt;a href=&#34;https://www.data-imaginist.com/art&#34;&gt;generative art&lt;/a&gt;. No postprocessing required anymore.&lt;/p&gt;
+      <guid>https://www.mstoffel.xyz/making-a-ggplot-theme/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://ggplot2.tidyverse.org/&#34;&gt;ggplot2&lt;/a&gt; has become one of the most powerful and flexible visualisation tools, with a large community and lots of people working on new extensions every day. A large number of &lt;a href=&#34;https://www.r-graph-gallery.com/&#34;&gt;ways to represent data&lt;/a&gt; makes it possible to create nearly anything in &lt;code&gt;ggplot2&lt;/code&gt;, from great &lt;a href=&#34;https://bbc.github.io/rcookbook/&#34;&gt;data journalism&lt;/a&gt; to &lt;a href=&#34;https://www.cedricscherer.com/top/dataviz/&#34;&gt;beautiful infographics&lt;/a&gt; and &lt;a href=&#34;https://www.data-imaginist.com/art&#34;&gt;generative art&lt;/a&gt;. No postprocessing required anymore.&lt;/p&gt;
 &lt;p&gt;The general look of a ggplot is controlled by a &lt;strong&gt;theme&lt;/strong&gt;. Anyone using ggplot knows that the default grey theme is usually not what you want to show the world. Modifying themes is very flexible, but a little bit complicated. Even after using it for years, I have to google some things every single time. Creating your own theme is a way to give your plots a consistent and personal design, and will save you a lot of time and many lines of code.&lt;/p&gt;
-&lt;div id=&#34;the-default-ggplot&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;The default ggplot&lt;/h3&gt;
-&lt;p&gt;Let’s use the data from &lt;a href=&#34;https://www.gapminder.org/&#34;&gt;gapminder&lt;/a&gt; to see how a default plot looks like.
+&lt;h3 id=&#34;the-default-ggplot&#34;&gt;The default ggplot&lt;/h3&gt;
+&lt;p&gt;Let&amp;rsquo;s use the data from &lt;a href=&#34;https://www.gapminder.org/&#34;&gt;gapminder&lt;/a&gt; to see how a default plot looks like.
 We first load a few packages and do some data pre-processing.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
-library(gapminder)
-library(dplyr)
-library(wesanderson)
-library(systemfonts)
-# a bit of data processing
-dat &amp;lt;- gapminder %&amp;gt;% 
-        group_by(year, continent) %&amp;gt;% 
-        summarise(`Life Expectancy` = mean(lifeExp),
-                  Population = sum(as.numeric(pop))) %&amp;gt;% 
-        rename(Year = year, Continent = continent)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Here is a default &lt;code&gt;theme_grey()&lt;/code&gt; scatterplot.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(dat, aes(Year, `Life Expectancy`, color = Continent)) +
-      geom_point()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;480&#34; /&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ggplot2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gapminder&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dplyr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wesanderson&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;systemfonts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# a bit of data processing&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;gapminder&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+        &lt;span class=&#34;nf&#34;&gt;group_by&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;year&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;continent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+        &lt;span class=&#34;nf&#34;&gt;summarise&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;`Life Expectancy`&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;mean&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;lifeExp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+                  &lt;span class=&#34;n&#34;&gt;Population&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;as.numeric&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+        &lt;span class=&#34;nf&#34;&gt;rename&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Year&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;year&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Continent&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;continent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here is a default &lt;code&gt;theme_grey()&lt;/code&gt; scatterplot.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;nf&#34;&gt;ggplot&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;aes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Year&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;`Life Expectancy`&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Continent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;
+      &lt;span class=&#34;nf&#34;&gt;geom_point&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://www.mstoffel.xyz/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;480&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There are a few things I change all the time:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;The background, which I prefer simple plain, or only with x and y axis lines.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Grid lines: I usually keep only major grid lines (as they are connected to values) or remove them entirely.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The spacing between axis, axis-labels and axis-titles.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The font.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;For themes with axis lines, like theme_classic, the line thickness.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The background, which I prefer simple plain, or only with x and y axis lines.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Grid lines: I usually keep only major grid lines (as they are connected to values) or remove them entirely.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The spacing between axis, axis-labels and axis-titles.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The font.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;For themes with axis lines, like theme_classic, the line thickness.&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id=&#34;making-your-own-theme&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Making your own theme&lt;/h3&gt;
+&lt;h3 id=&#34;making-your-own-theme&#34;&gt;Making your own theme&lt;/h3&gt;
 &lt;p&gt;Making a new theme is quite simple. We (1) create a function which starts with a standard theme, such as &lt;code&gt;theme_minimal&lt;/code&gt; and (2) add all the theme aspects which we prefer for our plots. Finally (3), we add some arguments to make changing things easy which we need often, such as axis and grid lines and the text size. Below is the theme I am using, but of course you can change every other theme aspect too (see &lt;a href=&#34;https://ggplot2.tidyverse.org/reference/theme.html&#34;&gt;theme documentation&lt;/a&gt;).
-I’m often using the ‘Avenir Next’ font, which might not be installed on your system (at the end of this post is a little guide on how to install fancy fonts). Using ‘sans’ should always work.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;theme_simple &amp;lt;- function(axis_lines = TRUE, 
-                         grid_lines = FALSE,     
-                         text_size = 12,       
-                         line_size = 0.2,
-                         # replace with &amp;#39;sans&amp;#39; if not working
-                         base_family= &amp;#39;Avenir Next&amp;#39;){ 
+I&amp;rsquo;m often using the &amp;lsquo;Avenir Next&amp;rsquo; font, which might not be installed on your system (at the end of this post is a little guide on how to install fancy fonts). Using &amp;lsquo;sans&amp;rsquo; should always work.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;n&#34;&gt;theme_simple&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;function&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;axis_lines&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;TRUE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; 
+                         &lt;span class=&#34;n&#34;&gt;grid_lines&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;FALSE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;     
+                         &lt;span class=&#34;n&#34;&gt;text_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;       
+                         &lt;span class=&#34;n&#34;&gt;line_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0.2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+                         &lt;span class=&#34;c1&#34;&gt;# replace with &amp;#39;sans&amp;#39; if not working&lt;/span&gt;
+                         &lt;span class=&#34;n&#34;&gt;base_family&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;Avenir Next&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;){&lt;/span&gt; 
         
-    # start with theme_minimal because it is really simple.
-    th &amp;lt;- ggplot2::theme_minimal(base_family = base_family, 
-                               base_size = text_size)
+    &lt;span class=&#34;c1&#34;&gt;# start with theme_minimal because it is really simple.&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ggplot2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;theme_minimal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;base_family&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;base_family&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; 
+                               &lt;span class=&#34;n&#34;&gt;base_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;text_size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
          
-    # remove the grid lines 
-    th &amp;lt;- th + theme(panel.grid=element_blank())
+    &lt;span class=&#34;c1&#34;&gt;# remove the grid lines &lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;panel.grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;element_blank&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
     
-    # if we want axis lines
-    if (axis_lines) {
-      # We add axis lines and give them our preferred thickness
-        th &amp;lt;- th + 
-            theme(axis.line = element_line(size = line_size),
-                  axis.ticks = element_line(size = line_size))
-    } 
-    # do we want grid lines?
-    if (grid_lines) {
-        th &amp;lt;- th + 
-            theme(panel.grid.major = element_line(size = line_size))
-    }
+    &lt;span class=&#34;c1&#34;&gt;# if we want axis lines&lt;/span&gt;
+    &lt;span class=&#34;nf&#34;&gt;if &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;axis_lines&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+      &lt;span class=&#34;c1&#34;&gt;# We add axis lines and give them our preferred thickness&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; 
+            &lt;span class=&#34;nf&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;axis.line&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;element_line&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;line_size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;
+                  &lt;span class=&#34;n&#34;&gt;axis.ticks&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;element_line&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;line_size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; 
+    &lt;span class=&#34;c1&#34;&gt;# do we want grid lines?&lt;/span&gt;
+    &lt;span class=&#34;nf&#34;&gt;if &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;grid_lines&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; 
+            &lt;span class=&#34;nf&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;panel.grid.major&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;element_line&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;line_size&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
     
-    # more space for axis text/title and plot title 
-    th &amp;lt;- th + theme(
-              axis.text.x=element_text(margin=margin(t=5)),
-              axis.text.y=element_text(margin=margin(r=5)),
-              axis.title.x=element_text(margin=margin(t=10)),
-              axis.title.y=element_text(margin=margin(r=10)),
-              plot.title=element_text(margin=margin(b=10)))
+    &lt;span class=&#34;c1&#34;&gt;# more space for axis text/title and plot title &lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;th&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+              &lt;span class=&#34;n&#34;&gt;axis.text.x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;element_text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt;
+              &lt;span class=&#34;n&#34;&gt;axis.text.y&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;element_text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt;
+              &lt;span class=&#34;n&#34;&gt;axis.title.x&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;element_text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt;
+              &lt;span class=&#34;n&#34;&gt;axis.title.y&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;element_text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt;
+              &lt;span class=&#34;n&#34;&gt;plot.title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;element_text&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;margin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
     
-    return (th)
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;adding-theme_simple-to-the-plot.&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Adding &lt;code&gt;theme_simple&lt;/code&gt; to the plot.&lt;/h3&gt;
+    &lt;span class=&#34;nf&#34;&gt;return &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;th&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;adding-theme_simple-to-the-plot&#34;&gt;Adding &lt;code&gt;theme_simple&lt;/code&gt; to the plot.&lt;/h3&gt;
 &lt;p&gt;Now, we can add &lt;code&gt;theme_simple()&lt;/code&gt; to the plot.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(dat, aes(Year, `Life Expectancy`, color = Continent)) +
-    geom_point() +
-    scale_color_manual(values = wes_palette(&amp;quot;Darjeeling2&amp;quot;)) + 
-    theme_simple()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;480&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Small tweaks can sometimes make a big aesthetic difference. &lt;code&gt;ggplot&lt;/code&gt; comes with a few themes, like theme_classic(), which are sort of close to what I like my plots to be, but are just not quite there. If you feel the same, it’s time to make your own theme.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;nf&#34;&gt;ggplot&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;aes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Year&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;`Life Expectancy`&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Continent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;
+    &lt;span class=&#34;nf&#34;&gt;geom_point&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;
+    &lt;span class=&#34;nf&#34;&gt;scale_color_manual&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;values&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;wes_palette&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Darjeeling2&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; 
+    &lt;span class=&#34;nf&#34;&gt;theme_simple&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://www.mstoffel.xyz/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;480&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Small tweaks can sometimes make a big aesthetic difference. &lt;code&gt;ggplot&lt;/code&gt; comes with a few themes,  like theme_classic(), which are sort of close to what I like my plots to be, but are just not quite there. If you feel the same, it&amp;rsquo;s time to make your own theme.&lt;/p&gt;
 &lt;p&gt;Lastly, you can put the code for your theme into an R script and save it, for example as theme_simple.R. The next time you make plots, just source the script to load the &lt;code&gt;theme_simple()&lt;/code&gt; function. To use it as the default theme, we can use theme_set like so:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;source(&amp;quot;theme_simple.R&amp;quot;) 
-# set theme_simple as default theme
-ggplot2::theme_set(theme_simple()) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;That’s it!&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;nf&#34;&gt;source&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;theme_simple.R&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; 
+&lt;span class=&#34;c1&#34;&gt;# set theme_simple as default theme&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;ggplot2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;theme_set&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;theme_simple&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That&amp;rsquo;s it!&lt;/p&gt;
 &lt;p&gt;If you are plotting in base R, you might say: You need a full blog post just to explain how to make ggplot look like base R with a different font! And I can only say: touché, my friend.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;appendix-fancy-fonts-made-easy&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Appendix: Fancy fonts made easy&lt;/h3&gt;
+&lt;h3 id=&#34;appendix-fancy-fonts-made-easy&#34;&gt;Appendix: Fancy fonts made easy&lt;/h3&gt;
 &lt;p&gt;Fonts can really make a big difference in the visual design of plots. A lot of freely available fonts are on &lt;a href=&#34;https://fonts.google.com/&#34;&gt;https://fonts.google.com/&lt;/a&gt;. On Mac, I just download them, double click and they are installed. Then, we have to make them available in R. The &lt;code&gt;systemfonts&lt;/code&gt; package magically finds all installed fonts from different directories.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# install.packages(&amp;quot;systemfonts)
-library(systemfonts)
-# which fonts are installed?
-# print only top 5
-system_fonts()[1:5, ]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 5 x 9
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# install.packages(&amp;#34;systemfonts)&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;systemfonts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# which fonts are installed?&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# print only top 5&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;system_fonts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;[1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 5 x 9
 #&amp;gt;   path          index name       family    style  weight width  italic monospace
 #&amp;gt;   &amp;lt;chr&amp;gt;         &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;      &amp;lt;chr&amp;gt;     &amp;lt;chr&amp;gt;  &amp;lt;ord&amp;gt;  &amp;lt;ord&amp;gt;  &amp;lt;lgl&amp;gt;  &amp;lt;lgl&amp;gt;    
 #&amp;gt; 1 /Library/Fon…     1 Skia-Regu… Skia      Black  heavy  normal FALSE  FALSE    
 #&amp;gt; 2 /Library/Fon…     1 ITFDevana… ITF Deva… Bold   bold   normal FALSE  FALSE    
 #&amp;gt; 3 /Library/Fon…     0 SignPaint… SignPain… House… normal semic… FALSE  FALSE    
 #&amp;gt; 4 /Library/Fon…     1 KannadaSa… Kannada … Bold   bold   normal FALSE  FALSE    
-#&amp;gt; 5 /Library/Fon…     0 Damascus   Damascus  Regul… normal normal FALSE  FALSE&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I’ve just downloaded a font which looks like it’s from Pokemon Red and Blue on the old big grey Game boy, called Press Start 2P. We can first check if its there with &lt;code&gt;match_font()&lt;/code&gt; and then just use it in the ggplot.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# match_font(&amp;#39;Press Start 2P&amp;#39;)
-ggplot(dat, aes(Year, `Life Expectancy`, color = Continent)) +
-    geom_point() +
-    scale_color_manual(values = wes_palette(&amp;quot;Darjeeling2&amp;quot;)) + 
-    theme_simple(base_family = &amp;quot;Press Start 2P&amp;quot;, text_size = 9)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;480&#34; /&gt;&lt;/p&gt;
+#&amp;gt; 5 /Library/Fon…     0 Damascus   Damascus  Regul… normal normal FALSE  FALSE
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I&amp;rsquo;ve just downloaded a font which looks like it&amp;rsquo;s from Pokemon Red and Blue on the old big grey Game boy, called Press Start 2P. We can first check if its there with &lt;code&gt;match_font()&lt;/code&gt; and then just use it in the ggplot.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# match_font(&amp;#39;Press Start 2P&amp;#39;)&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;ggplot&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;aes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Year&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;`Life Expectancy`&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Continent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;
+    &lt;span class=&#34;nf&#34;&gt;geom_point&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;
+    &lt;span class=&#34;nf&#34;&gt;scale_color_manual&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;values&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;wes_palette&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;Darjeeling2&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; 
+    &lt;span class=&#34;nf&#34;&gt;theme_simple&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;base_family&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;Press Start 2P&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;text_size&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://www.mstoffel.xyz/posts/making_a_ggplot_theme_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;480&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Other options to import fonts are &lt;a href=&#34;https://cran.r-project.org/web/packages/extrafont/README.html&#34;&gt;extrafont&lt;/a&gt; and
 &lt;a href=&#34;https://cran.rstudio.com/web/packages/showtext/vignettes/introduction.html&#34;&gt;showtext&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;pdf-ing-fancy-fonts&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;pdf-ing fancy fonts&lt;/h3&gt;
+&lt;h3 id=&#34;pdf-ing-fancy-fonts&#34;&gt;pdf-ing fancy fonts&lt;/h3&gt;
 &lt;p&gt;Sometimes, especially for science publications, plots need to be saved as pdfs. With non-standard fonts, this can be problematic, because they have to be embedded, but a little tweak to &lt;code&gt;ggsave()&lt;/code&gt; can help here.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggsave(&amp;quot;plot.pdf&amp;quot;, device = cairo_pdf)&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;nf&#34;&gt;ggsave&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;plot.pdf&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;device&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cairo_pdf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     
     
     <item>
       <title>Magic map() - a minimal functional programming workflow</title>
-      <link>https://example.com/magic-map-a-minimal-functional-programming-workflow/</link>
+      <link>https://www.mstoffel.xyz/magic-map-a-minimal-functional-programming-workflow/</link>
       <pubDate>Fri, 19 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/magic-map-a-minimal-functional-programming-workflow/</guid>
-      <description>
-&lt;script src=&#34;https://example.com/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-
-&lt;div id=&#34;TOC&#34;&gt;
-
-&lt;/div&gt;
-
-&lt;p&gt;“Form follows function” - &lt;em&gt;Louis Sullivan&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Functional programming is simply about writing code with functions. Instead of repeating the same line of code over and over or using double-nested for loops, we can abstract the essence of what we are doing into functions. A function can then be elegantly applied to many inputs. Here, we will do this with &lt;code&gt;purrr::map()&lt;/code&gt;, which I’m using day in and day out and which is a great starting point to dive into the world of functional programming.&lt;/p&gt;
-&lt;p&gt;Let’s go through some of the &lt;code&gt;map()&lt;/code&gt;-magic with a minimal workflow to produce clean, robust and fast code. We will do a small genome-wide association study, an analysis looking at the association between genes and a trait by fitting a model over and over again for every SNP in the genome.&lt;/p&gt;
+      <guid>https://www.mstoffel.xyz/magic-map-a-minimal-functional-programming-workflow/</guid>
+      <description>&lt;p&gt;&amp;ldquo;Form follows function&amp;rdquo; - &lt;em&gt;Louis Sullivan&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Functional programming is simply about writing code with functions. Instead of repeating the same line of code over and over or using double-nested for loops, we can abstract the essence of what we are doing into functions. A function can then be elegantly applied to many inputs. Here, we will do this with &lt;code&gt;purrr::map()&lt;/code&gt;, which I&amp;rsquo;m using day in and day out and which is a great starting point to dive into the world of functional programming.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s go through some of the &lt;code&gt;map()&lt;/code&gt;-magic with a minimal workflow to produce clean, robust and fast code. We will do a small genome-wide association study, an analysis looking at the association between genes and a trait by fitting a model over and over again for every SNP in the genome.&lt;/p&gt;
 &lt;p&gt;Here are some my favorite packages.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(purrr) # provides the key function here: map
-library(furrr) # does map in parallel
-library(dplyr) # does all sorts of magic
-library(glue)  # concatenates strings beautifully
-library(broom) # takes a model and returns a tidy data.frame&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Let’s see whether drinking coffee has a genetic basis. We make up a trait
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;purrr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# provides the key function here: map&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;furrr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# does map in parallel&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dplyr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# does all sorts of magic&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;glue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# concatenates strings beautifully&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;library&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;broom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# takes a model and returns a tidy data.frame&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Let&amp;rsquo;s see whether drinking coffee has a genetic basis. We make up a trait
 (coffees per day) and 100 SNPs for 100 individuals.&lt;/p&gt;
-&lt;div id=&#34;simulate-data&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Simulate data&lt;/h2&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;coffees   &amp;lt;- sample(1:6, 100, TRUE)
-snps      &amp;lt;- replicate(100, sample(c(0,1,2), 100, TRUE))
-snp_names &amp;lt;- paste0(&amp;quot;snp&amp;quot;, 1:100)
+&lt;h2 id=&#34;simulate-data&#34;&gt;Simulate data&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;n&#34;&gt;coffees&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;sample&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;TRUE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;snps&lt;/span&gt;      &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;replicate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;sample&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;TRUE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;snp_names&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;paste0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;snp&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-dat &amp;lt;- data.frame(cbind(coffees, snps)) %&amp;gt;% 
-            setNames(c(&amp;quot;coffees&amp;quot;, snp_names))
+&lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;data.frame&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;cbind&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;coffees&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;snps&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+            &lt;span class=&#34;nf&#34;&gt;setNames&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;coffees&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;snp_names&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
             
-head(dat[1:5, 1:7])&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt;   coffees snp1 snp2 snp3 snp4 snp5 snp6
-#&amp;gt; 1       1    1    2    1    0    1    1
-#&amp;gt; 2       5    1    1    2    0    0    2
-#&amp;gt; 3       6    1    2    0    1    1    0
-#&amp;gt; 4       5    0    2    2    1    1    2
-#&amp;gt; 5       3    0    2    1    2    0    1&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;write-a-function&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;1) Write a function&lt;/h2&gt;
+&lt;span class=&#34;nf&#34;&gt;head&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dat[1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt;   coffees snp1 snp2 snp3 snp4 snp5 snp6
+#&amp;gt; 1       1    0    1    0    0    2    1
+#&amp;gt; 2       1    2    1    1    1    0    2
+#&amp;gt; 3       1    0    0    2    2    0    0
+#&amp;gt; 4       3    0    0    2    0    2    1
+#&amp;gt; 5       3    1    2    2    2    0    0
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;1-write-a-function&#34;&gt;1) Write a function&lt;/h2&gt;
 &lt;p&gt;We could now do 100 linear models manually by writing 100 lines of code, or we could do a &lt;code&gt;for&lt;/code&gt; loop.&lt;/p&gt;
-&lt;p&gt;Instead, let’s write a function to fit &lt;em&gt;one&lt;/em&gt; model, and then apply this function to each SNP. We generally want the thing that changes (i.e. snp_name) to be the first argument. The function below fits a linear model of coffee consumption with a snp as predictor, and extracts the model estimate and p-value for the SNP. It returns a one-row &lt;code&gt;data.frame&lt;/code&gt;. I generally like my functions to return data.frames, because that makes it easy to put together many function outputs into a big data.frame at the end.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_model &amp;lt;- function(snp_name, dat) {
-      # write formula using SNP name
-      model_formula &amp;lt;- glue(&amp;quot;coffees ~ {snp_name}&amp;quot;)
-      # fit linear model
-      fit &amp;lt;- lm(model_formula, data = dat) %&amp;gt;% 
-                  broom::tidy() %&amp;gt;%        # tidy results
-                  filter(term == snp_name) # extract snp
-      return(fit)
+&lt;p&gt;Instead, let&amp;rsquo;s write a function to fit &lt;em&gt;one&lt;/em&gt; model, and then apply this function to each SNP. We generally want the thing that changes (i.e. snp_name) to be the first argument. The function below fits a linear model of coffee consumption with a snp as predictor, and extracts the model estimate and p-value for the SNP. It returns a one-row &lt;code&gt;data.frame&lt;/code&gt;. I generally like my functions to return data.frames, because that makes it easy to put together many function outputs into a big data.frame at the end.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;n&#34;&gt;fit_model&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;function&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;snp_name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+      &lt;span class=&#34;c1&#34;&gt;# write formula using SNP name&lt;/span&gt;
+      &lt;span class=&#34;n&#34;&gt;model_formula&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;glue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;coffees ~ {snp_name}&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+      &lt;span class=&#34;c1&#34;&gt;# fit linear model&lt;/span&gt;
+      &lt;span class=&#34;n&#34;&gt;fit&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;lm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;model_formula&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+                  &lt;span class=&#34;n&#34;&gt;broom&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;tidy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# tidy results&lt;/span&gt;
+                  &lt;span class=&#34;nf&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;term&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;snp_name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# extract snp&lt;/span&gt;
+      &lt;span class=&#34;nf&#34;&gt;return&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
       
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;use-map-to-apply-function-to-every-snp&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;2) Use &lt;code&gt;map()&lt;/code&gt; to apply function to every SNP&lt;/h2&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-use-map-to-apply-function-to-every-snp&#34;&gt;2) Use &lt;code&gt;map()&lt;/code&gt; to apply function to every SNP&lt;/h2&gt;
 &lt;p&gt;Using a vector with &lt;code&gt;snp_names&lt;/code&gt;, we can apply the function to every SNP. The structure of &lt;code&gt;map()&lt;/code&gt; is always the same: map(list/vector, function, additional_arguments). &lt;code&gt;map()&lt;/code&gt; always returns a list. We can convert the list to a data.frame with &lt;code&gt;dplyr::bind_rows()&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# run gwas
-gwas &amp;lt;- map(snp_names, fit_model, dat) %&amp;gt;% 
-              bind_rows()
-# print first three SNPs
-gwas[1:3, ]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# run gwas&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;gwas&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;snp_names&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fit_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+              &lt;span class=&#34;nf&#34;&gt;bind_rows&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# print first three SNPs&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;gwas[1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
 #&amp;gt;   term  estimate std.error statistic p.value
 #&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
-#&amp;gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&amp;gt; 2 snp2    0.201      0.207     0.970   0.334
-#&amp;gt; 3 snp3   -0.323      0.202    -1.60    0.113&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;what-if-something-goes-wrong---map-safely&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;3) What if something goes wrong? - &lt;code&gt;map()&lt;/code&gt; safely&lt;/h2&gt;
-&lt;p&gt;Loops often fail becomes something goes wrong in one or a few iterations.Let’s introduce a non-existing SNP and try again to see how it fails&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;snp_names2 &amp;lt;- c(&amp;quot;not_a_snp&amp;quot;, snp_names)
+#&amp;gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&amp;gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&amp;gt; 3 snp3  -0.237       0.213   -1.11     0.270
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;3-what-if-something-goes-wrong---map-safely&#34;&gt;3) What if something goes wrong? - &lt;code&gt;map()&lt;/code&gt; safely&lt;/h2&gt;
+&lt;p&gt;Loops often fail becomes something goes wrong in one or a few iterations.Let&amp;rsquo;s introduce a non-existing SNP and try again to see how it fails&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;n&#34;&gt;snp_names2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;not_a_snp&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;snp_names&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-gwas &amp;lt;- map(snp_names2, fit_model, dat) %&amp;gt;% 
-      bind_rows()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt; Error in eval(predvars, data, env): object &amp;#39;not_a_snp&amp;#39; not found&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;We can make our gwas error-safe using &lt;code&gt;purrr::safely()&lt;/code&gt;. This does some magic under the hood which isn’t so important now. For every iteration, it will return a list with two elements, one for the result and one for the error (equals NULL if there is no error). This way, we always get the results or errors of all our iterations back.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_model_safely &amp;lt;- purrr::safely(fit_model)
+&lt;span class=&#34;n&#34;&gt;gwas&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;snp_names2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fit_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+      &lt;span class=&#34;nf&#34;&gt;bind_rows&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt; Error in eval(predvars, data, env): object &#39;not_a_snp&#39; not found
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can make our gwas error-safe using &lt;code&gt;purrr::safely()&lt;/code&gt;. This does some magic under the hood which isn&amp;rsquo;t so important now. For every iteration, it will return a list with two elements, one for the result and one for the error (equals NULL if there is no error). This way, we always get the results or errors of all our iterations back.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;n&#34;&gt;fit_model_safely&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purrr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;safely&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fit_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-gwas &amp;lt;- map(snp_names2, fit_model_safely, dat)
-gwas[1:2]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt; [[1]]
+&lt;span class=&#34;n&#34;&gt;gwas&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;snp_names2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fit_model_safely&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;gwas[1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt; [[1]]
 #&amp;gt; [[1]]$result
 #&amp;gt; NULL
 #&amp;gt; 
 #&amp;gt; [[1]]$error
-#&amp;gt; &amp;lt;simpleError in eval(predvars, data, env): object &amp;#39;not_a_snp&amp;#39; not found&amp;gt;
+#&amp;gt; &amp;lt;simpleError in eval(predvars, data, env): object &#39;not_a_snp&#39; not found&amp;gt;
 #&amp;gt; 
 #&amp;gt; 
 #&amp;gt; [[2]]
@@ -246,67 +225,61 @@ gwas[1:2]&lt;/code&gt;&lt;/pre&gt;
 #&amp;gt; # A tibble: 1 x 5
 #&amp;gt;   term  estimate std.error statistic p.value
 #&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
-#&amp;gt; 1 snp1    0.0266     0.212     0.126   0.900
+#&amp;gt; 1 snp1    -0.292     0.212     -1.38   0.172
 #&amp;gt; 
 #&amp;gt; [[2]]$error
-#&amp;gt; NULL&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;code&gt;map()&lt;/code&gt; lets you extract a list element simply by its name. Here, we iterate over the list of results and extract all SNPs that worked.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gwas &amp;lt;- map(gwas, &amp;quot;result&amp;quot;) %&amp;gt;% 
-            bind_rows()
-gwas[1:3, ]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
+#&amp;gt; NULL
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;map()&lt;/code&gt; lets you extract a list element simply by its name. Here, we iterate over the list of results and extract all SNPs that worked.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;n&#34;&gt;gwas&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;gwas&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;result&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+            &lt;span class=&#34;nf&#34;&gt;bind_rows&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;gwas[1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
 #&amp;gt;   term  estimate std.error statistic p.value
 #&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
-#&amp;gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&amp;gt; 2 snp2    0.201      0.207     0.970   0.334
-#&amp;gt; 3 snp3   -0.323      0.202    -1.60    0.113&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;what-if-it-takes-too-long---map-in-parallel&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;4) What if it takes too long? - &lt;code&gt;map()&lt;/code&gt; in parallel&lt;/h2&gt;
-&lt;p&gt;Once the idea of &lt;code&gt;map()&lt;/code&gt; is clear, we can easily parallelise it to run on multiple cores. There is some overhead in collecting computations from several cores so this doesn’t make much sense when the running time is short. But for longer computations, using 4 cores instead of 1 should make it nearly 4 times as fast.&lt;/p&gt;
-&lt;p&gt;We can use the &lt;code&gt;furrr&lt;/code&gt; package here, which mimics &lt;code&gt;purrr&lt;/code&gt; functions but can run in parallel. It is based on &lt;a href=&#34;https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html&#34;&gt;future&lt;/a&gt;, which is why all functions start with &lt;code&gt;future_&lt;/code&gt;, for example &lt;code&gt;future_map()&lt;/code&gt;. Unlike other ways of parallelising, this approach works on Windows, Mac and Linux. All we have to do now is to first set up a &lt;code&gt;plan()&lt;/code&gt; …&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# check available cores
-availableCores()
-# parallelises across 4 cores
-plan(multiprocess, workers = 4)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;… and then replace &lt;code&gt;map()&lt;/code&gt; with &lt;code&gt;future_map()&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gwas &amp;lt;- future_map(snp_names, fit_model, dat) %&amp;gt;% 
-            bind_rows()
-gwas[1:3, ]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
+#&amp;gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&amp;gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&amp;gt; 3 snp3  -0.237       0.213   -1.11     0.270
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;4-what-if-it-takes-too-long---map-in-parallel&#34;&gt;4) What if it takes too long? - &lt;code&gt;map()&lt;/code&gt; in parallel&lt;/h2&gt;
+&lt;p&gt;Once the idea of &lt;code&gt;map()&lt;/code&gt; is clear, we can easily parallelise it to run on multiple cores. There is some overhead in collecting computations from several cores so this doesn&amp;rsquo;t make much sense when the running time is short. But for longer computations, using 4 cores instead of 1 should make it nearly 4 times as fast.&lt;/p&gt;
+&lt;p&gt;We can use the &lt;code&gt;furrr&lt;/code&gt; package here, which mimics &lt;code&gt;purrr&lt;/code&gt; functions but can run in parallel. It is based on &lt;a href=&#34;https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html&#34;&gt;future&lt;/a&gt;, which is why all functions start with &lt;code&gt;future_&lt;/code&gt;, for example &lt;code&gt;future_map()&lt;/code&gt;. Unlike other ways of parallelising, this approach works on Windows, Mac and Linux. All we have to do now is to first set up a &lt;code&gt;plan()&lt;/code&gt; &amp;hellip;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# check available cores&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;availableCores&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# parallelises across 4 cores&lt;/span&gt;
+&lt;span class=&#34;nf&#34;&gt;plan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;multiprocess&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;workers&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&amp;hellip; and then replace &lt;code&gt;map()&lt;/code&gt; with &lt;code&gt;future_map()&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;n&#34;&gt;gwas&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;future_map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;snp_names&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fit_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+            &lt;span class=&#34;nf&#34;&gt;bind_rows&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;gwas[1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
 #&amp;gt;   term  estimate std.error statistic p.value
 #&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
-#&amp;gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&amp;gt; 2 snp2    0.201      0.207     0.970   0.334
-#&amp;gt; 3 snp3   -0.323      0.202    -1.60    0.113&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;the-full-minimal-workflow-for-a-robust-parallel-gwas&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;The full, minimal workflow for a robust, parallel gwas&lt;/h2&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plan(multiprocess, workers = 4)
+#&amp;gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&amp;gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&amp;gt; 3 snp3  -0.237       0.213   -1.11     0.270
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;the-full-minimal-workflow-for-a-robust-parallel-gwas&#34;&gt;The full, minimal workflow for a robust, parallel gwas&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span class=&#34;nf&#34;&gt;plan&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;multiprocess&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;workers&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 
-fit_model &amp;lt;- function(snp_name, dat) {
-      model_formula &amp;lt;- glue(&amp;quot;coffees ~ {snp_name}&amp;quot;)
-      fit &amp;lt;- lm(model_formula, data = dat) %&amp;gt;% 
-                  broom::tidy() %&amp;gt;% 
-                  filter(term == snp_name)
-      return(fit)
-}
+&lt;span class=&#34;n&#34;&gt;fit_model&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;function&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;snp_name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+      &lt;span class=&#34;n&#34;&gt;model_formula&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;glue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;coffees ~ {snp_name}&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+      &lt;span class=&#34;n&#34;&gt;fit&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;lm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;model_formula&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+                  &lt;span class=&#34;n&#34;&gt;broom&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;tidy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+                  &lt;span class=&#34;nf&#34;&gt;filter&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;term&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;snp_name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+      &lt;span class=&#34;nf&#34;&gt;return&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 
-fit_model_safely &amp;lt;- purrr::safely(fit_model)
-gwas &amp;lt;- future_map(snp_names, fit_model_safely, dat) %&amp;gt;% 
-                  map(&amp;quot;result&amp;quot;) %&amp;gt;% 
-                  bind_rows()
+&lt;span class=&#34;n&#34;&gt;fit_model_safely&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;purrr&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;safely&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;fit_model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;gwas&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;future_map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;snp_names&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fit_model_safely&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+                  &lt;span class=&#34;nf&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;result&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&amp;gt;%&lt;/span&gt; 
+                  &lt;span class=&#34;nf&#34;&gt;bind_rows&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 
-gwas[1:3, ]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
+&lt;span class=&#34;n&#34;&gt;gwas[1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;#&amp;gt; # A tibble: 3 x 5
 #&amp;gt;   term  estimate std.error statistic p.value
 #&amp;gt;   &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
-#&amp;gt; 1 snp1    0.0266     0.212     0.126   0.900
-#&amp;gt; 2 snp2    0.201      0.207     0.970   0.334
-#&amp;gt; 3 snp3   -0.323      0.202    -1.60    0.113&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;general-thoughts-about-map&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;General thoughts about map&lt;/h2&gt;
+#&amp;gt; 1 snp1  -0.292       0.212   -1.38     0.172
+#&amp;gt; 2 snp2  -0.00891     0.212   -0.0420   0.967
+#&amp;gt; 3 snp3  -0.237       0.213   -1.11     0.270
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;general-thoughts-about-map&#34;&gt;General thoughts about map&lt;/h2&gt;
 &lt;p&gt;&lt;em&gt;When to use map?&lt;/em&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Whenever more than two lines of code look similar, whenever a for loop needs two cups of coffee to be understood, map will be on your side&lt;/li&gt;
@@ -325,17 +298,20 @@ gwas[1:3, ]&lt;/code&gt;&lt;/pre&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;em&gt;What if I have more than one vector or list as input?&lt;/em&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;map2() takes two vectors as input and pmap() takes any number of vectors as input. I’m using pmap() to iterate over rows in a data.frame, but this is stuff for another blogpost I think.&lt;/li&gt;
+&lt;li&gt;map2() takes two vectors as input and pmap() takes any number of vectors as input. I&amp;rsquo;m using pmap() to iterate over rows in a data.frame, but this is stuff for another blogpost I think.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id=&#34;where-to-go-from-here&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Where to go from here&lt;/h2&gt;
+&lt;h2 id=&#34;where-to-go-from-here&#34;&gt;Where to go from here&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Jenny Bryan’s &lt;a href=&#34;https://jennybc.github.io/purrr-tutorial/index.html&#34;&gt;purrr tutorials&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Hadley Wickham’s &lt;a href=&#34;https://www.youtube.com/watch?v=bzUmK0Y07ck&amp;amp;t=2589s%5D&#34;&gt;“The joy of functional programming”&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;R4DS chapter on &lt;a href=&#34;https://r4ds.had.co.nz/iteration.html&#34;&gt;iterations&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Jenny Bryan&amp;rsquo;s &lt;a href=&#34;https://jennybc.github.io/purrr-tutorial/index.html&#34;&gt;purrr tutorials&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Hadley Wickham&amp;rsquo;s &lt;a href=&#34;https://www.youtube.com/watch?v=bzUmK0Y07ck&amp;amp;t=2589s%5D&#34;&gt;&amp;ldquo;The joy of functional programming&amp;rdquo;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;R4DS chapter on &lt;a href=&#34;https://r4ds.had.co.nz/iteration.html&#34;&gt;iterations&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;
 </description>
     </item>
     
